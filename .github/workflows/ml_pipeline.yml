@@ -35,6 +35,15 @@ jobs:
           sleep 10
           python train.py \
             --tracking-uri http://localhost:${{ env.MLFLOW_PORT }} \
-            --epochs 5 \
+            --epochs 1 \
             --batch-size 256 \
             --lr 0.001
+      - name: Validate model quality
+        run: |
+          python validate_quality.py
+
+      - name: Save MLflow data
+        uses: actions/cache/save@v3
+        with:
+          path: ./mlruns
+          key: ${{ steps.cache-mlflow.outputs.cache-primary-key }}
