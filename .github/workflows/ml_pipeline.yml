@@ -35,7 +35,7 @@ jobs:
           sleep 5
           python train.py \
             --tracking-uri http://localhost:${{ env.MLFLOW_PORT }} \
-            --epochs 0 \
+            --epochs 4 \
             --batch-size 256 \
             --lr 0.001
       - name: Validate model quality
