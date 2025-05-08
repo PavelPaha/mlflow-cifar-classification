@@ -110,7 +110,6 @@ if __name__ == "__main__":
     model = Net().to(device)
     optimizer = optim.Adam(model.parameters(), lr=args.lr)
 
-    # Убрать явный вызов start_run()
     try:
         for epoch in range(1, args.epochs + 1):
             train(model, device, train_loader, optimizer, epoch)
@@ -121,5 +120,8 @@ if __name__ == "__main__":
         plot_confusion_matrix(cm, class_names=[str(i) for i in range(10)])
         mlflow.log_artifact("confusion_matrix.png")
 
+        accuracy, preds, targets = test(model, device, test_loader, args.epochs + 1)
+        with open("val_accuracy.txt", "w") as f:
+            f.write(str(accuracy))
     finally:
         mlflow.end_run()
